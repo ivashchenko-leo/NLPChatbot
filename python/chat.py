@@ -13,7 +13,7 @@ class ChatBot:
         self.tags = tags
         self.intents = intents
 
-    def answer(self, sentence):
+    def answer(self, sentence) -> str:
         X = bag_of_words(tokenize(sentence), self.all_words)
         X = X.reshape(1, X.shape[0])
         X = torch.from_numpy(X)
