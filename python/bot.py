@@ -1,5 +1,5 @@
 import telebot
-import python.chat
+import python.nn_model
 import logging.config
 from python import datasource
 from python import commands
@@ -10,16 +10,31 @@ from python.message_parser import build_argparse
 API_KEY = '5083139604:AAGcd0m6UhBkNmxIu78Nv2c53c0Q4lg8r14'
 LANGUAGES = ['EN', 'RU']
 
+DB_HOST = "localhost"
+DB_NAME = "postgres"
+DB_USER = "postgres"
+DB_PASSWORD = "password"
+
+logging.config.fileConfig("../logging.conf")
+
+
+def train_model(language: str):
+    data_source = datasource.PostgresDatasource(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD)
+    patterns = data_source.get_patterns(language)
+
+    data_source.close()
+
+    python.nn_model.train(patterns)
+
 
 def run():
-    logging.config.fileConfig("../logging.conf")
     logger = logging.getLogger()
     parser = build_argparse()
 
     bot = telebot.TeleBot(API_KEY)
-    model = python.chat.load_model()
+    model = python.nn_model.load()
 
-    data_source = datasource.PostgresDatasource("localhost", "postgres", "postgres", "password")
+    data_source = datasource.PostgresDatasource(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD)
     command_executor = commands.CommandExecutor(data_source)
 
     @bot.message_handler(commands=["exec"])
