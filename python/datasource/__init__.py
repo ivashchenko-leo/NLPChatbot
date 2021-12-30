@@ -11,6 +11,18 @@ class PostgresDatasource:
         self.connection = psycopg2.connect(host=host, database=database, user=user, password=password)
         self.logger.debug("Database connection has been open")
 
+    def __select_single(self, sql, params):
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(sql, params)
+
+            return cursor.fetchone()
+        except (Exception, psycopg2.DatabaseError) as ex:
+            self.logger.exception(ex)
+            self.connection.rollback()
+        finally:
+            cursor.close()
+
     def __select_multiple(self, sql, params):
         cursor = self.connection.cursor()
         try:
@@ -22,6 +34,15 @@ class PostgresDatasource:
             self.connection.rollback()
         finally:
             cursor.close()
+
+    def get_response(self, group_tag, language):
+        validation.guard_alphanumeric(language, "Language must not be null")
+
+        sql = "select R.TEXT from RESPONSE_{} R inner join GROUP_TAG_{} GT on GT.ID = R.GROUP_TAG_ID where GT.NAME = %s" \
+              " order by random() limit 1".format(language, language)
+        params = (group_tag, )
+
+        return self.__select_single(sql, params)
 
     def get_patterns(self, language):
         validation.guard_alphanumeric(language, "Language must be an alphanumeric string")

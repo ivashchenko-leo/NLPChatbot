@@ -1,17 +1,15 @@
-import random
 import torch
 from python.nlp_utils import bag_of_words, tokenize
 
 
 class ChatBot:
 
-    def __init__(self, model, all_words, tags, intents):
+    def __init__(self, model, all_words, tags):
         self.model = model
         self.all_words = all_words
         self.tags = tags
-        self.intents = intents
 
-    def answer(self, sentence) -> str:
+    def answer(self, sentence):
         X = bag_of_words(tokenize(sentence), self.all_words)
         X = X.reshape(1, X.shape[0])
         X = torch.from_numpy(X)
@@ -22,13 +20,7 @@ class ChatBot:
 
         prob = torch.softmax(output, dim=1)[0][predicted.item()]
 
-        if prob.item() > 0.75:
-            responses = next(filter(lambda intent: intent['tag'] == tag, self.intents['intents']))['responses']
-            response = random.choice(responses)
-        else:
-            response = "I don't understand..."
-
-        return response
+        return tag, prob
 
 
 

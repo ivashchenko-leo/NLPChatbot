@@ -109,7 +109,7 @@ def train(intents, batch_size=8, hidden_size=8, learning_rate=0.001, num_epochs=
     logger.info(f'Training complete, model saved to {path}')
 
 
-def load(intents):
+def load():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     data = torch.load("../models/bot_model.pth")
@@ -124,4 +124,4 @@ def load(intents):
     model.load_state_dict(model_state)
     model.eval()
 
-    return ChatBot(model, all_words, tags, intents)
+    return ChatBot(model, all_words, tags)

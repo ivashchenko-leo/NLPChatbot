@@ -58,8 +58,14 @@ def run():
 
     @bot.message_handler(content_types=["text"])
     def message_handler(message):
-        reply = model.answer(message.text)
-        bot.send_message(message.chat.id, reply)
+        tag, prob = model.answer(message.text)
+        language = "EN"
+        if prob >= 0.75:
+            response = data_source.get_response(tag, language)
+        else:
+            response = "I don't understand...."
+
+        bot.send_message(message.chat.id, response)
 
     def sigint_handler(sig, frame):
         data_source.close()
