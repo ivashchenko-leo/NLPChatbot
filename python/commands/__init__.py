@@ -1,4 +1,3 @@
-from python.datasource import PostgresDatasource
 import logging
 
 

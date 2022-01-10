@@ -1,6 +1,6 @@
 import psycopg2
 import logging
-import python.validation as validation
+import validation
 
 
 class PostgresDatasource:

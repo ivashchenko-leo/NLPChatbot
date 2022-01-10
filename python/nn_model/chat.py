@@ -1,5 +1,5 @@
 import torch
-from python.nlp_utils import bag_of_words, tokenize
+from nlp_utils import bag_of_words, tokenize
 
 
 class ChatBot:

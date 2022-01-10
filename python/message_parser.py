@@ -3,7 +3,7 @@ import argparse
 
 def build_argparse():
     parser = argparse.ArgumentParser(prog="/exec")
-    parser.add_argument("--debug", dest="debug", action="store_true")
+    parser.add_argument("--debug", dest="debug", action="store_true", default=False)
 
     subparsers = parser.add_subparsers(dest="command")
 

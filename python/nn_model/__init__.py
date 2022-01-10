@@ -2,9 +2,9 @@ import torch
 import numpy as np
 import torch.nn as nn
 import logging
-from python.nn_model.chat import ChatBot
+from nn_model.chat import ChatBot
 from torch.utils.data import Dataset, DataLoader
-from python.nlp_utils import tokenize, stem, bag_of_words
+from nlp_utils import tokenize, stem, bag_of_words
 
 
 class NeuralNet(nn.Module):
@@ -71,7 +71,7 @@ def train(intents, batch_size=8, hidden_size=8, learning_rate=0.001, num_epochs=
     output_size = len(tags)
 
     dataset = ChatDataset(X_train, y_train)
-    train_loader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=2)
+    train_loader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=1)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = NeuralNet(input_size, hidden_size, output_size).to(device)
