@@ -2,4 +2,3 @@ pytorch
 nltk
 numpy
 pyTelegramBotAPI
-psycopg2
