@@ -1,5 +1,5 @@
 import telebot
-import nn_model
+import nn_model.scikit_model as nn_model
 import logging.config
 import datasource.json_datasource as datasource
 import commands
@@ -31,10 +31,11 @@ def run():
     parser = build_argparse()
 
     bot = telebot.TeleBot(API_KEY)
-    model = nn_model.load()
 
     data_source = datasource.JsonDatasource('../data/intents.json')
     command_executor = commands.CommandExecutor(data_source)
+
+    model = nn_model.load(data_source, "EN")
 
     @bot.message_handler(commands=["exec"])
     def exec_handler(message):
