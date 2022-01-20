@@ -6,9 +6,6 @@ import commands
 import signal
 from message_parser import build_argparse
 
-
-API_KEY = '5083139604:AAGcd0m6UhBkNmxIu78Nv2c53c0Q4lg8r14'
-
 DB_HOST = "localhost"
 DB_NAME = "postgres"
 DB_USER = "postgres"
@@ -26,11 +23,11 @@ def train_model(language: str):
     nn_model.train(patterns)
 
 
-def run():
+def run(api_key: str):
     logger = logging.getLogger()
     parser = build_argparse()
 
-    bot = telebot.TeleBot(API_KEY)
+    bot = telebot.TeleBot(api_key)
 
     data_source = datasource.JsonDatasource('../data/intents.json')
     command_executor = commands.CommandExecutor(data_source)
