@@ -5,8 +5,8 @@ import argparse
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--train", dest="is_training", action="store_true", default=False)
-    parser.add_argument("command")
-    parser.add_argument("api_key")
+    parser.add_argument("script_name")
+    parser.add_argument("--api_key", dest="api_key")
 
     args = parser.parse_args(sys.argv)
 
