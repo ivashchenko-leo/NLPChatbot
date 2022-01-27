@@ -52,6 +52,12 @@ class PostgresDatasource:
 
         return self.__select_multiple(sql, None)
 
+    def get_response_not_found(self, language):
+        pass
+
+    def get_certainty_threshold(self, language):
+        pass
+
     def __insert(self, sql, params):
         cursor = self.connection.cursor()
         try:

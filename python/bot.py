@@ -55,14 +55,22 @@ def run(api_key: str):
 
     @bot.message_handler(content_types=["text"])
     def message_handler(message):
-        tag, prob = model.answer(message.text)
-        language = "EN"
-        if prob >= 0.75:
-            response = data_source.get_response(tag, language)
-        else:
-            response = data_source.get_response_not_found(language)
+        try:
+            logger.debug("CHAT ID: " + str(message.chat.id) + " MESSAGE: " + message.text)
 
-        bot.send_message(message.chat.id, response)
+            tag, prob = model.answer(message.text)
+            language = "EN"
+            threshold = data_source.get_certainty_threshold(language)
+
+            if prob >= threshold:
+                response = data_source.get_response(tag, language)
+            else:
+                response = data_source.get_response_not_found(language)
+
+            logger.debug("CHAT ID: " + str(message.chat.id) + " RESPONSE: " + response)
+            bot.send_message(message.chat.id, response)
+        except Exception as ex:
+            logger.exception(ex)
 
     def sigint_handler(sig, frame):
         logger.info("Stopping...")

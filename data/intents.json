@@ -1,7 +1,8 @@
 {
   "en": {
     "general": {
-      "responseNotFound": "Sorry, I don't understand...."
+      "responseNotFound": "Sorry, I don't understand....",
+      "certaintyThreshold": 0.75
     },
 
     "intents": [

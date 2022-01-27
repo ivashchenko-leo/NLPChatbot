@@ -22,6 +22,9 @@ class JsonDatasource:
     def get_response_not_found(self, language):
         return self.intents[language.lower()]['general']['responseNotFound']
 
+    def get_certainty_threshold(self, language):
+        return self.intents[language.lower()]['general']['certaintyThreshold']
+
     def insert_pattern(self, pattern, group_tag, language):
         pass
 
